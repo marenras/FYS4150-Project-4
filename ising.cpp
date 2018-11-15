@@ -4,8 +4,8 @@
 #include <fstream>
 #include <ctime>
 #include <random>
- 
-Ising::Ising(int dim_lattice, std::string filename, bool temp_header)
+
+Ising::Ising(int dim_lattice, std::string filename)
 {
   // Setting "self" values
   this->dim_lattice = dim_lattice;
@@ -33,7 +33,7 @@ Ising::Ising(int dim_lattice, std::string filename, bool temp_header)
   WriteHeader(temp_header);
 }
 
-Ising::Ising(int dim_lattice, std::string filename, double T_min, double T_max, double dT, int mc_cycles)
+Ising::Ising(int dim_lattice, std::string filename, double T_min, double T_max, double dT, int mc_cycles, bool random_lattice)
 {
   // Setting "self" values
   this->dim_lattice = dim_lattice;
@@ -64,12 +64,12 @@ Ising::Ising(int dim_lattice, std::string filename, double T_min, double T_max, 
   WriteHeader(temp_header);
 
   for (double T = T_min; T <= T_max; T+=dT){
-    InitializeLattice(T);
+    InitializeLattice(T, random_lattice);
     MonteCarloSample(mc_cycles);
   }
 }
 
-void Ising::InitializeLattice(double temperature)
+void Ising::InitializeLattice(double temperature, bool random_lattice)
 {
   // Setting "self" temperature
   this->temperature = temperature;
@@ -92,10 +92,21 @@ void Ising::InitializeLattice(double temperature)
   // and initialize magnetization (sum of all spins)
   for (int x = 0; x < dim_lattice; x++) {
     for (int y = 0; y < dim_lattice; y++) {
-      lattice(x,y) = 1.0;
+
+      if (random_lattice == false)
+      {
+        lattice(x,y) = 1.0;
+      }
+      else
+      {
+          double rand_condition = RNG(generator);
+          if (rand_condition < 0.5) {lattice(x,y) = 1.0;}
+          else {lattice(x,y) = -1.0;}
+      }
       magnetization += lattice(x,y);
     }
   }
+
 
   // Setup initial energy
   for (int x = 0; x < dim_lattice; x++) {
@@ -137,7 +148,7 @@ void Ising::Metropolis()
 			double delta_e =  2*lattice(rand_x, rand_y)*
         (lattice(rand_x, PBC(rand_y, dim_lattice, -1)) +
          lattice(PBC(rand_x, dim_lattice, -1), rand_y) +
-         lattice(rand_x, PBC(rand_y, dim_lattice, 1)) +
+         lattice(rand_x, PBC(rand_y, dim_lattice, 1))  +
          lattice(PBC(rand_x, dim_lattice, 1), rand_y));
 
 			double rand_condition = RNG(generator);
@@ -163,7 +174,7 @@ void Ising::MonteCarloSample(int N)
 	MC_cycles = N;
 
 	// Starts the Monte-Carlo sampling
-	for (int i = 1; i < MC_cycles; i++)
+	for (int i = 1; i <= MC_cycles; i++)
 	{
 		Metropolis();
 
@@ -192,6 +203,7 @@ void Ising::WriteHeader(bool temp_header)
        ofile << setw(8) << setprecision(4) << T_max;
        ofile << setw(8) << setprecision(4) << dT;
    }
+
    ofile << "\n" << "\n";
 }
 
@@ -208,7 +220,7 @@ void Ising::WriteToFile(int current_cycle)
 
   // Variance calculations
 	energy_variance = (normalized_expectation_values(1) - normalized_expectation_values(0)*normalized_expectation_values(0)) / N_spins;
-	susceptibility = (normalized_expectation_values(3) - normalized_expectation_values(2)*normalized_expectation_values(2)) / (N_spins * temperature);
+	susceptibility = (normalized_expectation_values(3) - normalized_expectation_values(4)*normalized_expectation_values(4)) / (N_spins * temperature);
 
   mean_energy = normalized_expectation_values(0) / N_spins;
   mean_magnetization = normalized_expectation_values(2) / N_spins;
@@ -216,7 +228,7 @@ void Ising::WriteToFile(int current_cycle)
   mean_absolute_magnetization = normalized_expectation_values(4) / N_spins;
 
 
-  ofile << setprecision(8) << current_cycle;
+  ofile << setw(15) << setprecision(8) << current_cycle;
 	ofile << setw(15) << setprecision(8) << temperature;
 	ofile << setw(15) << setprecision(8) << mean_energy;
 	ofile << setw(15) << setprecision(8) << mean_magnetization;

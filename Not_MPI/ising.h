@@ -1,5 +1,6 @@
 #include <armadillo>
 #include <string>
+#include <mpi.h>
 
 class Ising
 {

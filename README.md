@@ -4,7 +4,7 @@ In this respotory you will find codes used for project 4 in FYS4150.
 
 ## Description of programs
 
-**Not MPI**
+**Not MPI version**
 
 Compiled by writing `make` in command line. Can be runned in two different ways. If you want the program to run for several different temperature, the following variables has to be provided in the command line:  
 * Lattice dimension
@@ -21,7 +21,8 @@ If you want the program to only run for one temperature, the following variables
 * Filename for output data  
 
 
-**MPI**
+
+**MPI version**
 
 Compiled be writing `mpic++ -o run.x main_MPI.cpp ising.cpp` in command line. Runned by writing `mpirun ./run.x` and the following variables in the command line:
 * Lattice dimension

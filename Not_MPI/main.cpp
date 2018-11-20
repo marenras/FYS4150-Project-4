@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
     bool random_lattice = true;
 
 
+    // Reading in variables from command line
     if (argc == 7) {
       dim_lattice = atoi(argv[1]);
       MC_cycles   = atoi(argv[2]);
@@ -24,6 +25,7 @@ int main(int argc, char* argv[])
       dT          = atof(argv[5]);
       filename    = argv[6];
 
+      // Running algorithm for different temperatures
       Ising model(dim_lattice, filename, T_min, T_max, dT, MC_cycles, random_lattice);
     }
 
@@ -34,6 +36,7 @@ int main(int argc, char* argv[])
       T           = atoi(argv[3]);
       filename    = argv[4];
 
+      // Running algorithm for one temperature
       Ising model(dim_lattice, filename);
       model.InitializeLattice(T, random_lattice);
       model.MonteCarloSample(MC_cycles);

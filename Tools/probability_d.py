@@ -5,33 +5,37 @@ import os
 from matplotlib2tikz import save as tikz_save
 
 
+folder = "../Data/"
 if len(sys.argv) < 1:
 	print("Please provide filename in commandline")
 	sys.exit()
 else:
 	if sys.argv[1].endswith(".dat"):
-		filename = "../Data/" + sys.argv[1]
+		filename = sys.argv[1]
 	else:
-		filename = "../Data/"  + sys.argv[1] + ".dat"
+		filename = sys.argv[1] + ".dat"
 
-N, T, E, M, C_V, chi, absM, accepted_states = np.loadtxt(filename, unpack = True, skiprows=2)
+N, T, E, M, C_V, chi, absM, accepted_states = np.loadtxt(folder + filename, unpack = True, skiprows=2)
 N_samples = int(N[-1])
 T = T[0]
 k_B = 1
 sigma_E = C_V*k_B*T**2
 
 
+j = 100
 plt.figure()
-plt.hist(E[int(N_samples*0.2):], bins=40)
+plt.hist(E[int(N_samples*0.2):], bins=20)
 plt.grid()
 plt.xlabel("Energy")
 plt.ylabel("Probability")
-plt.title('Probability of energy at T=%.1f' %T)
-#tikz_save("../Figures/" + filename[:-4] + "_P.tex", figureheight="\\figureheight", figurewidth="\\figurewidth")
+plt.title('Temperature T=%.1f' %T)
+#tikz_save("../Figures/Project_4d/" + filename[:-4] + "_P.tex", figureheight="\\figureheight", figurewidth="\\figurewidth")
 
 plt.figure()
-plt.plot(N[int(N_samples*0.2):], sigma_E[int(N_samples*0.2):])
+plt.plot(N[int(N_samples*0.2):][::j], sigma_E[int(N_samples*0.2):][::j])
 plt.grid()
-plt.ylabel(r'$\sigma_E$')
+plt.ylabel(r'$\sigma_E^2$')
 plt.xlabel('Monte Carlo cycles')
+plt.title('Temperature T=%.1f' %T)
+#tikz_save("../Figures/Project_4d/" + filename[:-4] + "_sigma.tex", figureheight="\\figureheight", figurewidth="\\figurewidth")
 plt.show()

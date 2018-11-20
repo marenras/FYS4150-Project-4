@@ -10,7 +10,8 @@ Ising::Ising(int dim_lattice)
   // Setting "self" values
   this->dim_lattice = dim_lattice;
 
-  // Creating emty lattice
+  // Creating emty lattice and vectors for energy
+  // difference and expectation values
 	N_spins = dim_lattice*dim_lattice;
 	lattice = arma::mat(dim_lattice, dim_lattice);
 	expectation_values = arma::vec(5);
@@ -72,7 +73,7 @@ void Ising::InitializeLattice(double temperature, bool random_lattice)
   // Setup initial energy
   for (int x = 0; x < dim_lattice; x++) {
     for (int y = 0; y < dim_lattice; y++) {
-      // sum over nearest neigbours with periodic boundary conditions
+      // Sum over nearest neigbours with periodic boundary conditions
       energy -= lattice(x,y) * (lattice(PBC(x, dim_lattice,-1), y)
       + lattice(x, PBC(y, dim_lattice,-1)));
     }

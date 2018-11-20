@@ -13,12 +13,12 @@ if len(sys.argv) < 1:
 	sys.exit()
 else:
 	if sys.argv[1].endswith(".dat"):
-		filename = sys.argv[1]
+		filename = "../Data/" + sys.argv[1]
 	else:
-		filename = sys.argv[1] + ".dat"
+		filename = "../Data/"  + sys.argv[1] + ".dat"
 
 
-T, E, C_V, M, chi, absM = np.loadtxt(filename, unpack = True)
+T, E, C_V, M,  chi, absM= np.loadtxt(filename, unpack = True, skiprows=2)
 
 def Z_analytical(T):
     beta = 1/(k_B*T)
@@ -45,20 +45,21 @@ def chi_analytical(T):
 	return beta*(32/Z * (1+np.exp(8*J*beta)) - M**2)
 
 
+
 plt.figure()
 plt.plot(T, E, 'ro', label='Monte Carlo')
 plt.plot(T, E_analytical(T)/4, label='Analytical')
 plt.xlabel('Temperature')
-plt.ylabel('Energy')
+plt.ylabel(r'$\langle E \rangle $')
 plt.legend()
 plt.grid()
-tikz_save("../Figures/2Dlattice_E.tex", figureheight="\\figureheight", figurewidth="\\figureheight")
+#tikz_save("../Figures/2Dlattice_E.tex", figureheight="\\figureheight", figurewidth="\\figureheight")
 
 plt.figure()
 plt.plot(T, C_V, 'ro', label='Monte Carlo')
 plt.plot(T, C_V_analytical(T)/4, label='Analytical')
 plt.xlabel('Temperature')
-plt.ylabel('Specific heat')
+plt.ylabel(r'Specific heat $C_V$')
 plt.legend()
 plt.grid()
 #tikz_save("../Figures/2Dlattice_Cv.tex", figureheight="\\figureheight", figurewidth="\\figureheight")
@@ -67,7 +68,7 @@ plt.figure()
 plt.plot(T, absM, 'ro', label='Monte Carlo')
 plt.plot(T, M_analytical(T)/4, label='Analytical')
 plt.xlabel('Temperature')
-plt.ylabel('Magnetization')
+plt.ylabel(r'$\langle |M| \rangle $')
 plt.legend()
 plt.grid()
 #tikz_save("../Figures/2Dlattice_M.tex", figureheight="\\figureheight", figurewidth="\\figureheight")
@@ -76,9 +77,44 @@ plt.figure()
 plt.plot(T, chi, 'ro', label='Monte Carlo')
 plt.plot(T, chi_analytical(T)/4, label='Analytical')
 plt.xlabel('Temperature')
-plt.ylabel('Susceptibility')
+plt.ylabel(r'Susceptibility $\chi$')
 plt.legend()
 plt.grid()
 #tikz_save("../Figures/2Dlattice_chi.tex", figureheight="\\figureheight", figurewidth="\\figureheight")
 
 plt.show()
+
+# plt.figure()
+# plt.subplot(221)
+# plt.plot(T_list, E_list, 'ro', label='Monte Carlo')
+# plt.plot(T_list, E_analytical(T_list)/4, label='Analytical')
+# plt.xlabel('Temperature')
+# plt.ylabel('Energy')
+# plt.grid()
+#
+# plt.subplot(222)
+# plt.plot(T_list, C_V_list, 'ro', label='Monte Carlo')
+# plt.plot(T_list, C_V_analytical(T_list)/4, label='Analytical')
+# plt.xlabel('Temperature')
+# plt.ylabel('Specific heat')
+# plt.grid()
+#
+# plt.subplot(223)
+# plt.plot(T_list, M_list, 'ro', label='Monte Carlo')
+# plt.plot(T_list, M_analytical(T_list)/4, label='Analytical')
+# plt.xlabel('Temperature')
+# plt.ylabel('Magnetization')
+# plt.grid()
+#
+# plt.subplot(224)
+# plt.plot(T_list, chi_list, 'ro', label='Monte Carlo')
+# plt.plot(T_list, chi_analytical(T_list)/4, label='Analytical')
+# plt.xlabel('Temperature')
+# plt.ylabel('Susceptibility')
+# plt.grid()
+#
+# tikz_save("../Figures/2Dlattice_100000.tex", figureheight="\\figureheight", figurewidth="\\figureheight")
+# plt.tight_layout()
+# plt.subplots_adjust(top=0.9)
+# plt.suptitle('N=%d' %(N_samples))
+# plt.show()

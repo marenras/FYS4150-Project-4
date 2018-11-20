@@ -4,9 +4,9 @@ In this respotory you will find codes used for project 4 in FYS4150.
 
 ## Description of programs
 
-** Not MPI **
+**Not MPI**
 Compiled by writing 
-make 
+    make
 in command line. 
 
 Can be runned in two different ways. If you want the program to run for several different temperature, the following variables has to be provided in the command line:  

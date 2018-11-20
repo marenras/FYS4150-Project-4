@@ -5,6 +5,7 @@ In this respotory you will find codes used for project 4 in FYS4150.
 ## Description of programs
 
 **Not MPI**
+
 Compiled by writing 
     make
 in command line. 

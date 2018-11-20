@@ -31,4 +31,4 @@ Compiled be writing `mpic++ -o run.x main_MPI.cpp ising.cpp` in command line. Ru
 * Temperature step 
 * Filename for output data
 
-It is also possible to add for example `-n 3` after `mpirun` if you want the program to run on three cores. If this is not provided, it will run on the number of cores from the default host file.
+It is also possible to add for example `-n 3` after `mpirun` if you want the program to run on three cores. If this is not provided, it will run on the number of cores given from the default host file.

@@ -20,7 +20,9 @@ If you want the program to only run for one temperature, the following variables
 * Temperature 
 * Filename for output data  
 
+
 **MPI**
+
 Compiled be writing `mpic++ -o run.x main_MPI.cpp ising.cpp` in command line. Runned by writing `mpirun ./run.x` and the following variables in the command line:
 * Lattice dimension
 * Number of MC cycles 
@@ -29,4 +31,4 @@ Compiled be writing `mpic++ -o run.x main_MPI.cpp ising.cpp` in command line. Ru
 * Temperature step 
 * Filename for output data
 
-It is also possible to add for example `-np 3` after `mpirun` if you want the program to on three cores. The standard is four cores. 
+It is also possible to add for example `-n 3` after `mpirun` if you want the program to run on three cores. If this is not provided, it will run on the number of cores from the default host file.

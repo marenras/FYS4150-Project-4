@@ -8,6 +8,7 @@ from matplotlib2tikz import save as tikz_save
 J = 1
 k_B = 1
 
+# Reading in data
 if len(sys.argv) < 1:
 	print("Please provide filename in commandline")
 	sys.exit()
@@ -16,7 +17,6 @@ else:
 		filename = "../Data/" + sys.argv[1]
 	else:
 		filename = "../Data/"  + sys.argv[1] + ".dat"
-
 
 with open(filename, "r") as file:
     first_line = file.readline()
@@ -27,6 +27,7 @@ T_list = np.arange(float(T_min), float(T_max), float(dT))
 N, T, E, M, C_V, chi, absM, accepted_states = np.loadtxt(filename, unpack = True, skiprows=2)
 N_samples = int(N[-1])
 
+# Finding average expectation values for each temperature 
 E_list = []
 C_V_list = []
 M_list = []
@@ -101,38 +102,3 @@ plt.grid()
 #tikz_save("../Figures/2Dlattice_chi.tex", figureheight="\\figureheight", figurewidth="\\figureheight")
 
 plt.show()
-
-# plt.figure()
-# plt.subplot(221)
-# plt.plot(T_list, E_list, 'ro', label='Monte Carlo')
-# plt.plot(T_list, E_analytical(T_list)/4, label='Analytical')
-# plt.xlabel('Temperature')
-# plt.ylabel('Energy')
-# plt.grid()
-#
-# plt.subplot(222)
-# plt.plot(T_list, C_V_list, 'ro', label='Monte Carlo')
-# plt.plot(T_list, C_V_analytical(T_list)/4, label='Analytical')
-# plt.xlabel('Temperature')
-# plt.ylabel('Specific heat')
-# plt.grid()
-#
-# plt.subplot(223)
-# plt.plot(T_list, M_list, 'ro', label='Monte Carlo')
-# plt.plot(T_list, M_analytical(T_list)/4, label='Analytical')
-# plt.xlabel('Temperature')
-# plt.ylabel('Magnetization')
-# plt.grid()
-#
-# plt.subplot(224)
-# plt.plot(T_list, chi_list, 'ro', label='Monte Carlo')
-# plt.plot(T_list, chi_analytical(T_list)/4, label='Analytical')
-# plt.xlabel('Temperature')
-# plt.ylabel('Susceptibility')
-# plt.grid()
-#
-# tikz_save("../Figures/2Dlattice_100000.tex", figureheight="\\figureheight", figurewidth="\\figureheight")
-# plt.tight_layout()
-# plt.subplots_adjust(top=0.9)
-# plt.suptitle('N=%d' %(N_samples))
-# plt.show()

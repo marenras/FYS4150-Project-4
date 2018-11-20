@@ -5,6 +5,7 @@ import os
 from matplotlib2tikz import save as tikz_save
 
 
+# Reading in data, note that the disordered filename has to be longer than the ordered filename
 if len(sys.argv) < 2:
 	print("Please provide filename for ordered and disordered initial lattice data in commandline")
 	sys.exit()
@@ -41,7 +42,7 @@ if len(filename1) > len(filename2):
 	chi_disordered, absM_disordered, accepted_states_disordered = np.loadtxt(filename1, unpack = True)
 
 
-
+# Plotting every j'th point 
 j = 100
 plt.plot(N_ordered[::j], E_ordered[::j], 'b', label='Ordered initial lattice')
 plt.plot(N_disordered[::j], E_disordered[::j], 'r', label='Disordered initial lattice')

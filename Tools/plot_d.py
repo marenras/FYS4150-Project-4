@@ -5,6 +5,7 @@ import os
 from matplotlib2tikz import save as tikz_save
 
 
+# Reading in data
 folder = "../Data/"
 if len(sys.argv) < 1:
 	print("Please provide filename in commandline")
@@ -15,6 +16,7 @@ else:
 	else:
 		filename = sys.argv[1] + ".dat"
 
+
 N, T, E, M, C_V, chi, absM, accepted_states = np.loadtxt(folder + filename, unpack = True, skiprows=2)
 N_samples = int(N[-1])
 T = T[0]
@@ -22,6 +24,7 @@ k_B = 1
 sigma_E = C_V*k_B*T**2
 
 
+# Plotting every j'th point 
 j = 100
 plt.figure()
 plt.hist(E[int(N_samples*0.2):], bins=20)
